@@ -49,7 +49,6 @@ input {
   border-radius: 12px;
   font-size: 17px;
   background: white;
-  outline: none;
 }
 
 .title {
@@ -59,13 +58,13 @@ input {
   margin: 15px 0;
 }
 
-.reciter-info {
+.info {
   background: white;
   padding: 14px;
   border-radius: 12px;
   margin-bottom: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
   text-align: center;
+  box-shadow: 0 2px 8px #0001;
 }
 
 .surahs {
@@ -81,7 +80,7 @@ input {
   padding: 16px 10px;
   font-size: 17px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  box-shadow: 0 2px 8px #0001;
 }
 
 .surah:hover {
@@ -103,7 +102,7 @@ input {
   padding: 18px;
   background: white;
   border-radius: 15px;
-  box-shadow: 0 3px 15px rgba(0,0,0,.18);
+  box-shadow: 0 3px 15px #0003;
   text-align: center;
 }
 
@@ -121,23 +120,8 @@ audio {
   padding: 9px 20px;
   border: 0;
   border-radius: 8px;
-  cursor: pointer;
 }
 
-.loading {
-  text-align: center;
-  padding: 25px;
-  color: #087f5b;
-  font-size: 18px;
-}
-
-.error {
-  background: #ffe5e5;
-  color: #b00000;
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-}
 </style>
 </head>
 
@@ -153,11 +137,15 @@ audio {
   <div class="title">🎙️ اختر القارئ</div>
 
   <select id="reciter">
-    <option>جاري تحميل القراء...</option>
+    <option value="mishary">مشاري راشد العفاسي</option>
+    <option value="sudais">عبد الرحمن السديس</option>
+    <option value="maher">ماهر المعيقلي</option>
+    <option value="shuraim">سعود الشريم</option>
+    <option value="minshawi">محمد صديق المنشاوي</option>
   </select>
 
-  <div id="reciterInfo" class="reciter-info">
-    اختر قارئًا
+  <div id="info" class="info">
+    اختر القارئ واضغط على أي سورة
   </div>
 
   <input
@@ -168,11 +156,7 @@ audio {
 
   <div class="title">📖 السور</div>
 
-  <div id="surahs" class="surahs">
-    <div class="loading">
-      جاري تحميل السور...
-    </div>
-  </div>
+  <div id="surahs" class="surahs"></div>
 
   <div id="player" class="player">
 
@@ -192,144 +176,75 @@ audio {
 
 <script>
 
-const API =
-"https://www.mp3quran.net/api/v3/reciters?language=ar";
-
-
-/* =========================
-   أسماء السور
-========================= */
-
 const surahs = [
-"الفاتحة",
-"البقرة",
-"آل عمران",
-"النساء",
-"المائدة",
-"الأنعام",
-"الأعراف",
-"الأنفال",
-"التوبة",
-"يونس",
-"هود",
-"يوسف",
-"الرعد",
-"إبراهيم",
-"الحجر",
-"النحل",
-"الإسراء",
-"الكهف",
-"مريم",
-"طه",
-"الأنبياء",
-"الحج",
-"المؤمنون",
-"النور",
-"الفرقان",
-"الشعراء",
-"النمل",
-"القصص",
-"العنكبوت",
-"الروم",
-"لقمان",
-"السجدة",
-"الأحزاب",
-"سبأ",
-"فاطر",
-"يس",
-"الصافات",
-"ص",
-"الزمر",
-"غافر",
-"فصلت",
-"الشورى",
-"الزخرف",
-"الدخان",
-"الجاثية",
-"الأحقاف",
-"محمد",
-"الفتح",
-"الحجرات",
-"ق",
-"الذاريات",
-"الطور",
-"النجم",
-"القمر",
-"الرحمن",
-"الواقعة",
-"الحديد",
-"المجادلة",
-"الحشر",
-"الممتحنة",
-"الصف",
-"الجمعة",
-"المنافقون",
-"التغابن",
-"الطلاق",
-"التحريم",
-"الملك",
-"القلم",
-"الحاقة",
-"المعارج",
-"نوح",
-"الجن",
-"المزمل",
-"المدثر",
-"القيامة",
-"الإنسان",
-"المرسلات",
-"النبأ",
-"النازعات",
-"عبس",
-"التكوير",
-"الانفطار",
-"المطففين",
-"الانشقاق",
-"البروج",
-"الطارق",
-"الأعلى",
-"الغاشية",
-"الفجر",
-"البلد",
-"الشمس",
-"الليل",
-"الضحى",
-"الشرح",
-"التين",
-"العلق",
-"القدر",
-"البينة",
-"الزلزلة",
-"العاديات",
-"القارعة",
-"التكاثر",
-"العصر",
-"الهمزة",
-"الفيل",
-"قريش",
-"الماعون",
-"الكوثر",
-"الكافرون",
-"النصر",
-"المسد",
-"الإخلاص",
-"الفلق",
-"الناس"
+"الفاتحة","البقرة","آل عمران","النساء","المائدة",
+"الأنعام","الأعراف","الأنفال","التوبة","يونس",
+"هود","يوسف","الرعد","إبراهيم","الحجر",
+"النحل","الإسراء","الكهف","مريم","طه",
+"الأنبياء","الحج","المؤمنون","النور","الفرقان",
+"الشعراء","النمل","القصص","العنكبوت","الروم",
+"لقمان","السجدة","الأحزاب","سبأ","فاطر",
+"يس","الصافات","ص","الزمر","غافر",
+"فصلت","الشورى","الزخرف","الدخان","الجاثية",
+"الأحقاف","محمد","الفتح","الحجرات","ق",
+"الذاريات","الطور","النجم","القمر","الرحمن",
+"الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+"الصف","الجمعة","المنافقون","التغابن","الطلاق",
+"التحريم","الملك","القلم","الحاقة","المعارج",
+"نوح","الجن","المزمل","المدثر","القيامة",
+"الإنسان","المرسلات","النبأ","النازعات","عبس",
+"التكوير","الانفطار","المطففين","الانشقاق","البروج",
+"الطارق","الأعلى","الغاشية","الفجر","البلد",
+"الشمس","الليل","الضحى","الشرح","التين",
+"العلق","القدر","البينة","الزلزلة","العاديات",
+"القارعة","التكاثر","العصر","الهمزة","الفيل",
+"قريش","الماعون","الكوثر","الكافرون","النصر",
+"المسد","الإخلاص","الفلق","الناس"
 ];
 
+const servers = {
 
-/* =========================
-   المتغيرات
-========================= */
+  mishary:
+  "https://server8.mp3quran.net/afs/",
 
-let reciters = [];
+  sudais:
+  "https://server11.mp3quran.net/sds/",
 
-let selectedReciter = null;
+  maher:
+  "https://server12.mp3quran.net/maher/",
 
-let selectedMoshaf = null;
+  shuraim:
+  "https://server7.mp3quran.net/shur/",
 
-const reciterSelect =
+  minshawi:
+  "https://server10.mp3quran.net/minsh/"
+
+};
+
+const names = {
+
+  mishary:
+  "مشاري راشد العفاسي",
+
+  sudais:
+  "عبد الرحمن السديس",
+
+  maher:
+  "ماهر المعيقلي",
+
+  shuraim:
+  "سعود الشريم",
+
+  minshawi:
+  "محمد صديق المنشاوي"
+
+};
+
+const reciter =
 document.getElementById("reciter");
+
+const info =
+document.getElementById("info");
 
 const surahsBox =
 document.getElementById("surahs");
@@ -346,211 +261,12 @@ document.getElementById("audio");
 const surahTitle =
 document.getElementById("surahTitle");
 
-const reciterInfo =
-document.getElementById("reciterInfo");
-
-
-/* =========================
-   تحميل القراء
-========================= */
-
-async function loadReciters() {
-
-  try {
-
-    const response =
-    await fetch(API);
-
-    if (!response.ok) {
-      throw new Error("API Error");
-    }
-
-    const data =
-    await response.json();
-
-    /*
-      نأخذ القراءات الكاملة
-      التي تحتوي على 114 سورة
-    */
-
-    let all = [];
-
-    data.reciters.forEach(reciter => {
-
-      if (!reciter.moshaf) return;
-
-      reciter.moshaf.forEach(moshaf => {
-
-        const list =
-        String(moshaf.surah_list || "")
-        .split(",")
-        .filter(x => x.trim() !== "");
-
-        if (list.length === 114) {
-
-          all.push({
-            name: reciter.name,
-            server: moshaf.server,
-            moshafName: moshaf.name
-          });
-
-        }
-
-      });
-
-    });
-
-
-    /*
-      إزالة التكرار
-    */
-
-    const unique = [];
-
-    const used = new Set();
-
-    all.forEach(item => {
-
-      const key =
-      item.name + "|" + item.server;
-
-      if (!used.has(key)) {
-
-        used.add(key);
-
-        unique.push(item);
-
-      }
-
-    });
-
-
-    /*
-      نأخذ أول 20 قارئ
-    */
-
-    reciters =
-    unique.slice(0, 20);
-
-
-    reciterSelect.innerHTML = "";
-
-
-    if (reciters.length === 0) {
-
-      reciterSelect.innerHTML =
-      "<option>لم يتم العثور على القراء</option>";
-
-      surahsBox.innerHTML =
-      `<div class="error">
-        لم يتم تحميل القراء.
-      </div>`;
-
-      return;
-    }
-
-
-    reciters.forEach((item, index) => {
-
-      const option =
-      document.createElement("option");
-
-      option.value = index;
-
-      option.textContent =
-      item.name;
-
-      reciterSelect.appendChild(option);
-
-    });
-
-
-    selectedReciter =
-    reciters[0];
-
-    selectedMoshaf =
-    selectedReciter;
-
-    updateInfo();
-
-    showSurahs();
-
-  }
-
-  catch(error) {
-
-    console.log(error);
-
-    reciterSelect.innerHTML =
-    "<option>حدث خطأ في تحميل القراء</option>";
-
-    surahsBox.innerHTML =
-    `<div class="error">
-      تعذر تحميل القراء.<br>
-      تأكد أن الإنترنت يعمل ثم اضغط Run مرة أخرى.
-    </div>`;
-
-  }
-
-}
-
-
-/* =========================
-   معلومات القارئ
-========================= */
-
-function updateInfo() {
-
-  if (!selectedReciter) return;
-
-  reciterInfo.innerHTML =
-  "🎙️ <b>" +
-  selectedReciter.name +
-  "</b><br>" +
-  selectedReciter.moshafName;
-
-}
-
-
-/* =========================
-   تغيير القارئ
-========================= */
-
-reciterSelect.addEventListener(
-"change",
-function() {
-
-  const index =
-  Number(this.value);
-
-  selectedReciter =
-  reciters[index];
-
-  selectedMoshaf =
-  selectedReciter;
-
-  audio.pause();
-
-  audio.removeAttribute("src");
-
-  player.style.display = "none";
-
-  updateInfo();
-
-  showSurahs();
-
-});
-
-
-/* =========================
-   عرض السور
-========================= */
 
 function showSurahs(list = surahs) {
 
   surahsBox.innerHTML = "";
 
-  list.forEach(name => {
+  list.forEach(function(name) {
 
     const number =
     surahs.indexOf(name) + 1;
@@ -558,8 +274,7 @@ function showSurahs(list = surahs) {
     const button =
     document.createElement("button");
 
-    button.className =
-    "surah";
+    button.className = "surah";
 
     button.innerHTML =
     `<span class="number">
@@ -567,7 +282,8 @@ function showSurahs(list = surahs) {
     </span>
     ${name}`;
 
-    button.onclick = function() {
+    button.onclick =
+    function() {
 
       playSurah(number, name);
 
@@ -580,57 +296,45 @@ function showSurahs(list = surahs) {
 }
 
 
-/* =========================
-   تشغيل السورة
-========================= */
+function updateInfo() {
+
+  info.innerHTML =
+  "🎙️ <b>" +
+  names[reciter.value] +
+  "</b><br>" +
+  "اضغط على أي سورة لتشغيلها";
+
+}
+
 
 function playSurah(number, name) {
 
-  if (!selectedMoshaf) {
-
-    alert("اختر قارئًا أولاً");
-
-    return;
-
-  }
-
-
-  const numberText =
+  const code =
   String(number).padStart(3, "0");
 
-
-  /*
-    السيرفر يأتي من بيانات
-    القارئ نفسه
-  */
-
   const url =
-  selectedMoshaf.server +
-  numberText +
+  servers[reciter.value] +
+  code +
   ".mp3";
-
 
   surahTitle.innerHTML =
   "سورة " +
   name +
   "<br><small>" +
-  selectedReciter.name +
+  names[reciter.value] +
   "</small>";
-
 
   audio.src = url;
 
-  player.style.display =
-  "block";
+  player.style.display = "block";
 
   audio.load();
 
-  audio.play().catch(() => {
-    console.log(
-      "اضغط Play لتشغيل الصوت"
-    );
-  });
+  audio.play().catch(function() {
 
+    console.log("اضغط تشغيل");
+
+  });
 
   player.scrollIntoView({
     behavior: "smooth",
@@ -640,16 +344,31 @@ function playSurah(number, name) {
 }
 
 
-/* =========================
-   البحث
-========================= */
+function closePlayer() {
+
+  audio.pause();
+
+  audio.removeAttribute("src");
+
+  audio.load();
+
+  player.style.display = "none";
+
+}
+
+
+reciter.addEventListener(
+"change",
+updateInfo
+);
+
 
 search.addEventListener(
 "input",
 function() {
 
   const text =
-  this.value.trim();
+  search.value.trim();
 
   if (text === "") {
 
@@ -659,43 +378,23 @@ function() {
 
   }
 
-
   const result =
-  surahs.filter(name =>
-    name.includes(text)
-  );
+  surahs.filter(function(name) {
 
+    return name.includes(text);
+
+  });
 
   showSurahs(result);
 
 });
 
 
-/* =========================
-   إغلاق المشغل
-========================= */
+updateInfo();
 
-function closePlayer() {
-
-  audio.pause();
-
-  audio.removeAttribute("src");
-
-  audio.load();
-
-  player.style.display =
-  "none";
-
-}
-
-
-/* =========================
-   بدء الموقع
-========================= */
-
-loadReciters();
+showSurahs();
 
 </script>
 
 </body>
-  </html>
+</html>
