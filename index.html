@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<head>
-<meta name="google-site-verification" content="V1pKwA84WTHiYk9ZHztI_trbjxPlE48F39-zW2K5-iA">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>القرآن الكريم</title>
 
 <style>
@@ -122,7 +121,6 @@ audio {
   border: 0;
   border-radius: 8px;
 }
-
 </style>
 </head>
 
@@ -130,48 +128,68 @@ audio {
 
 <header>
   <h1>📖 القرآن الكريم</h1>
-  <p>استمع إلى القرآن الكريم بأصوات القراء</p>
+  <p>استمع إلى القرآن الكريم بأصوات أشهر القراء</p>
 </header>
 
 <div class="container">
 
-  <div class="title">🎙️ اختر القارئ</div>
+<div class="title">🎙️ اختر القارئ</div>
 
-  <select id="reciter">
-    <option value="mishary">مشاري راشد العفاسي</option>
-    <option value="sudais">عبد الرحمن السديس</option>
-    <option value="maher">ماهر المعيقلي</option>
-    <option value="shuraim">سعود الشريم</option>
-    <option value="minshawi">محمد صديق المنشاوي</option>
-  </select>
+<select id="reciter">
 
-  <div id="info" class="info">
-    اختر القارئ واضغط على أي سورة
-  </div>
+<option value="mishary">مشاري راشد العفاسي</option>
+<option value="sudais">عبد الرحمن السديس</option>
+<option value="maher">ماهر المعيقلي</option>
+<option value="shuraim">سعود الشريم</option>
+<option value="minshawi">محمد صديق المنشاوي</option>
 
-  <input
-    id="search"
-    type="text"
-    placeholder="🔎 ابحث عن سورة..."
-  >
+<option value="husary">محمود خليل الحصري</option>
+<option value="abdulbasit">عبد الباسط عبد الصمد</option>
+<option value="mustafa">مصطفى إسماعيل</option>
+<option value="banna">محمود علي البنا</option>
+<option value="shatri">أبو بكر الشاطري</option>
 
-  <div class="title">📖 السور</div>
+<option value="dossary">ياسر الدوسري</option>
+<option value="faris">فارس عباد</option>
+<option value="ghamdi">سعد الغامدي</option>
+<option value="ajmi">أحمد العجمي</option>
+<option value="refai">هاني الرفاعي</option>
 
-  <div id="surahs" class="surahs"></div>
+<option value="jalil">خالد الجليل</option>
+<option value="qatami">ناصر القطامي</option>
+<option value="abkar">إدريس أبكر</option>
+<option value="jibril">محمد جبريل</option>
+<option value="jaber">علي جابر</option>
 
-  <div id="player" class="player">
+</select>
 
-    <h2 id="surahTitle"></h2>
+<div id="info" class="info">
+اختر القارئ واضغط على أي سورة
+</div>
 
-    <audio id="audio" controls></audio>
+<input
+id="search"
+type="text"
+placeholder="🔎 ابحث عن سورة..."
+>
 
-    <br>
+<div class="title">📖 السور</div>
 
-    <button class="close" onclick="closePlayer()">
-      إغلاق
-    </button>
+<div id="surahs" class="surahs"></div>
 
-  </div>
+<div id="player" class="player">
+
+<h2 id="surahTitle"></h2>
+
+<audio id="audio" controls></audio>
+
+<br>
+
+<button class="close" onclick="closePlayer()">
+إغلاق
+</button>
+
+</div>
 
 </div>
 
@@ -203,41 +221,95 @@ const surahs = [
 "المسد","الإخلاص","الفلق","الناس"
 ];
 
+/*
+  السيرفرات
+*/
+
 const servers = {
 
-  mishary:
-  "https://server8.mp3quran.net/afs/",
+mishary:
+"https://server8.mp3quran.net/afs/",
 
-  sudais:
-  "https://server11.mp3quran.net/sds/",
+sudais:
+"https://server11.mp3quran.net/sds/",
 
-  maher:
-  "https://server12.mp3quran.net/maher/",
+maher:
+"https://server12.mp3quran.net/maher/",
 
-  shuraim:
-  "https://server7.mp3quran.net/shur/",
+shuraim:
+"https://server7.mp3quran.net/shur/",
 
-  minshawi:
-  "https://server10.mp3quran.net/minsh/"
+minshawi:
+"https://server10.mp3quran.net/minsh/",
 
+husary:
+"https://server13.mp3quran.net/husr/",
+
+abdulbasit:
+"https://server7.mp3quran.net/basit/",
+
+mustafa:
+"https://server8.mp3quran.net/mustafa/",
+
+banna:
+"https://server7.mp3quran.net/bna/",
+
+shatri:
+"https://server11.mp3quran.net/shatri/",
+
+dossary:
+"https://server11.mp3quran.net/yasser/",
+
+faris:
+"https://server8.mp3quran.net/frs_a/",
+
+ghamdi:
+"https://server17.mp3quran.net/s_gmd/",
+
+ajmi:
+"https://server10.mp3quran.net/ajm/",
+
+refai:
+"https://server8.mp3quran.net/hani/",
+
+jalil:
+"https://server10.mp3quran.net/jleel/",
+
+qatami:
+"https://server6.mp3quran.net/qtm/",
+
+abkar:
+"https://server6.mp3quran.net/abkar/",
+
+jibril:
+"https://server8.mp3quran.net/jbrl/",
+
+jaber:
+"https://server11.mp3quran.net/a_jbr/"
 };
 
 const names = {
 
-  mishary:
-  "مشاري راشد العفاسي",
-
-  sudais:
-  "عبد الرحمن السديس",
-
-  maher:
-  "ماهر المعيقلي",
-
-  shuraim:
-  "سعود الشريم",
-
-  minshawi:
-  "محمد صديق المنشاوي"
+mishary:"مشاري راشد العفاسي",
+sudais:"عبد الرحمن السديس",
+maher:"ماهر المعيقلي",
+shuraim:"سعود الشريم",
+minshawi:"محمد صديق المنشاوي",
+husary:"محمود خليل الحصري",
+abdulbasit:"عبد الباسط عبد الصمد",
+mustafa:"مصطفى إسماعيل",
+banna:"محمود علي البنا",
+shatri:"أبو بكر الشاطري",
+dossary:"ياسر الدوسري",
+faris:"فارس عباد",
+ghamdi:"سعد الغامدي",
+ajmi:"أحمد العجمي",
+refai:"هاني الرفاعي",
+jalil:"خالد الجليل",
+qatami:"ناصر القطامي",
+abkar:"إدريس أبكر",
+jibril:"محمد جبريل",
+jaber:"علي جابر"
 
 };
 
@@ -265,95 +337,95 @@ document.getElementById("surahTitle");
 
 function showSurahs(list = surahs) {
 
-  surahsBox.innerHTML = "";
+surahsBox.innerHTML = "";
 
-  list.forEach(function(name) {
+list.forEach(function(name) {
 
-    const number =
-    surahs.indexOf(name) + 1;
+const number =
+surahs.indexOf(name) + 1;
 
-    const button =
-    document.createElement("button");
+const button =
+document.createElement("button");
 
-    button.className = "surah";
+button.className = "surah";
 
-    button.innerHTML =
-    `<span class="number">
-      سورة ${number}
-    </span>
-    ${name}`;
+button.innerHTML =
+`<span class="number">
+سورة ${number}
+</span>
+${name}`;
 
-    button.onclick =
-    function() {
+button.onclick =
+function() {
 
-      playSurah(number, name);
+playSurah(number,name);
 
-    };
+};
 
-    surahsBox.appendChild(button);
+surahsBox.appendChild(button);
 
-  });
+});
 
 }
 
 
 function updateInfo() {
 
-  info.innerHTML =
-  "🎙️ <b>" +
-  names[reciter.value] +
-  "</b><br>" +
-  "اضغط على أي سورة لتشغيلها";
+info.innerHTML =
+"🎙️ <b>" +
+names[reciter.value] +
+"</b><br>" +
+"اضغط على أي سورة لتشغيلها";
 
 }
 
 
-function playSurah(number, name) {
+function playSurah(number,name) {
 
-  const code =
-  String(number).padStart(3, "0");
+const code =
+String(number).padStart(3,"0");
 
-  const url =
-  servers[reciter.value] +
-  code +
-  ".mp3";
+const url =
+servers[reciter.value] +
+code +
+".mp3";
 
-  surahTitle.innerHTML =
-  "سورة " +
-  name +
-  "<br><small>" +
-  names[reciter.value] +
-  "</small>";
+surahTitle.innerHTML =
+"سورة " +
+name +
+"<br><small>" +
+names[reciter.value] +
+"</small>";
 
-  audio.src = url;
+audio.src = url;
 
-  player.style.display = "block";
+player.style.display = "block";
 
-  audio.load();
+audio.load();
 
-  audio.play().catch(function() {
+audio.play().catch(function(){
 
-    console.log("اضغط تشغيل");
+console.log("اضغط تشغيل");
 
-  });
+});
 
-  player.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-  });
+player.scrollIntoView({
+behavior:"smooth",
+block:"center"
+});
 
 }
 
 
 function closePlayer() {
 
-  audio.pause();
+audio.pause();
 
-  audio.removeAttribute("src");
+audio.removeAttribute("src");
 
-  audio.load();
+audio.load();
 
-  player.style.display = "none";
+player.style.display = "none";
 
 }
 
@@ -366,27 +438,27 @@ updateInfo
 
 search.addEventListener(
 "input",
-function() {
+function(){
 
-  const text =
-  search.value.trim();
+const text =
+search.value.trim();
 
-  if (text === "") {
+if(text === ""){
 
-    showSurahs();
+showSurahs();
 
-    return;
+return;
 
-  }
+}
 
-  const result =
-  surahs.filter(function(name) {
+const result =
+surahs.filter(function(name){
 
-    return name.includes(text);
+return name.includes(text);
 
-  });
+});
 
-  showSurahs(result);
+showSurahs(result);
 
 });
 
