@@ -15,7 +15,12 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f4f8f6;
+
+    background:
+        linear-gradient(rgba(4, 55, 38, 0.72), rgba(4, 55, 38, 0.72)),
+        url("https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=1600&q=80")
+        center center / cover fixed no-repeat;
+
     color: #222;
 }
 
@@ -256,7 +261,6 @@ footer {
     color: #666;
 }
 </style>
-
 </head>
 
 <body>
@@ -273,10 +277,6 @@ footer {
     <button onclick="showSection('evening')">🌙 أذكار المساء</button>
     <button onclick="showSection('comments')">💬 التعليقات</button>
 </nav>
-
-<!-- =========================
-القرآن الكريم
-========================= -->
 
 <section id="quran" class="section active">
 
@@ -326,99 +326,71 @@ footer {
 
 </section>
 
-<!-- =========================
-الأحاديث
-========================= -->
-
 <section id="hadith" class="section">
 
 <h2>📜 أحاديث نبوية</h2>
 
 <div class="card">
 <h3>حديث 1</h3>
-<p>
-إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.
-</p>
+<p>إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.</p>
 <div class="source">رواه البخاري ومسلم</div>
 </div>
 
 <div class="card">
 <h3>حديث 2</h3>
-<p>
-من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت.
-</p>
+<p>من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت.</p>
 <div class="source">رواه البخاري ومسلم</div>
 </div>
 
 <div class="card">
 <h3>حديث 3</h3>
-<p>
-لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.
-</p>
+<p>لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.</p>
 <div class="source">رواه البخاري ومسلم</div>
 </div>
 
 <div class="card">
 <h3>حديث 4</h3>
-<p>
-المسلم من سلم المسلمون من لسانه ويده.
-</p>
+<p>المسلم من سلم المسلمون من لسانه ويده.</p>
 <div class="source">رواه البخاري ومسلم</div>
 </div>
 
 <div class="card">
 <h3>حديث 5</h3>
-<p>
-من كان يؤمن بالله واليوم الآخر فلا يؤذ جاره، ومن كان يؤمن بالله واليوم الآخر فليكرم ضيفه.
-</p>
+<p>من كان يؤمن بالله واليوم الآخر فلا يؤذ جاره، ومن كان يؤمن بالله واليوم الآخر فليكرم ضيفه.</p>
 <div class="source">رواه البخاري</div>
 </div>
 
 <div class="card">
 <h3>حديث 6</h3>
-<p>
-لا تغضب.
-</p>
+<p>لا تغضب.</p>
 <div class="source">رواه البخاري</div>
 </div>
 
 <div class="card">
 <h3>حديث 7</h3>
-<p>
-من لا يَرحم لا يُرحم.
-</p>
+<p>من لا يَرحم لا يُرحم.</p>
 <div class="source">رواه البخاري ومسلم</div>
 </div>
 
 <div class="card">
 <h3>حديث 8</h3>
-<p>
-خيركم من تعلم القرآن وعلمه.
-</p>
+<p>خيركم من تعلم القرآن وعلمه.</p>
 <div class="source">رواه البخاري</div>
 </div>
 
 <div class="card">
 <h3>حديث 9</h3>
-<p>
-الدين النصيحة.
-</p>
+<p>الدين النصيحة.</p>
 <div class="source">رواه مسلم</div>
 </div>
 
 <div class="card">
 <h3>حديث 10</h3>
-<p>
-من سلك طريقًا يلتمس فيه علمًا سهل الله له به طريقًا إلى الجنة.
-</p>
+<p>من سلك طريقًا يلتمس فيه علمًا سهل الله له به طريقًا إلى الجنة.</p>
 <div class="source">رواه مسلم</div>
 </div>
 
 </section>
-
-<!-- =========================
-أذكار الصباح
-========================= -->
 
 <section id="morning" class="section">
 
@@ -442,16 +414,12 @@ footer {
 
 <div class="card">
 <h3>ذكر</h3>
-<p>
-سبحان الله وبحمده.
-</p>
+<p>سبحان الله وبحمده.</p>
 </div>
 
 <div class="card">
 <h3>دعاء</h3>
-<p>
-رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي.
-</p>
+<p>رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي.</p>
 <div class="source">سورة طه</div>
 </div>
 
@@ -466,17 +434,11 @@ footer {
 
 <div class="card">
 <h3>دعاء</h3>
-<p>
-رَبِّ زِدْنِي عِلْمًا.
-</p>
+<p>رَبِّ زِدْنِي عِلْمًا.</p>
 <div class="source">سورة طه: 114</div>
 </div>
 
 </section>
-
-<!-- =========================
-أذكار المساء
-========================= -->
 
 <section id="evening" class="section">
 
@@ -492,16 +454,12 @@ footer {
 
 <div class="card">
 <h3>ذكر</h3>
-<p>
-سبحان الله وبحمده.
-</p>
+<p>سبحان الله وبحمده.</p>
 </div>
 
 <div class="card">
 <h3>ذكر</h3>
-<p>
-أعوذ بكلمات الله التامات من شر ما خلق.
-</p>
+<p>أعوذ بكلمات الله التامات من شر ما خلق.</p>
 </div>
 
 <div class="card">
@@ -532,10 +490,6 @@ footer {
 </div>
 
 </section>
-
-<!-- =========================
-التعليقات
-========================= -->
 
 <section id="comments" class="section">
 
@@ -574,10 +528,6 @@ footer {
 
 </section>
 
-<!-- =========================
-مشغل الصوت
-========================= -->
-
 <div class="player" id="player">
 
 <button onclick="closePlayer()">✖ إغلاق</button>
@@ -587,10 +537,6 @@ footer {
 <audio id="audio" controls></audio>
 
 </div>
-
-<!-- =========================
-واتساب
-========================= -->
 
 <a
 class="whatsapp"
@@ -604,9 +550,7 @@ aria-label="تواصل معي على واتساب"
 </a>
 
 <footer>
-
 <p>© 2026 - موقع القرآن الكريم</p>
-
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
