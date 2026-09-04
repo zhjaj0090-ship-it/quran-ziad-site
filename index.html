@@ -1,1704 +1,416 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>القرآن الكريم والأذكار والأحاديث</title>
-
+<title>موقع القرآن الكريم</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:radial-gradient(circle at 50% 20%,rgba(0,120,80,.35),transparent 45%),linear-gradient(135deg,#063b2c,#021c15 60%,#063b2c);color:#fff;min-height:100vh}
+header{text-align:center;padding:25px 15px;background:rgba(0,0,0,.35);border-bottom:2px solid rgba(255,255,255,.12)}
+header h1{margin:0;font-size:32px} header p{margin:8px 0 0;color:#d7f5e9;font-size:17px}
+.daily-wird{width:94%;max-width:900px;margin:20px auto;background:rgba(10,10,10,.88);border-radius:25px;padding:20px;box-shadow:0 8px 25px rgba(0,0,0,.3)}
+.daily-wird h2{text-align:center;margin-top:0;color:#62d6ae}
+.wird-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.wird-card{background:#087f5b;border-radius:18px;padding:20px 10px;text-align:center;cursor:pointer;font-size:18px;transition:.2s}
+.wird-card:hover{transform:translateY(-3px);background:#09976d}.wird-card.done{background:#145c48;opacity:.8}
+.progress-container{width:100%;height:15px;background:#333;border-radius:20px;overflow:hidden;margin-top:20px}
+#wirdProgress{height:100%;width:0;background:#16b886;transition:.3s}
+#wirdStatus{text-align:center;color:#55d6aa;margin:15px 0 0;font-size:18px}
+nav{width:94%;max-width:900px;margin:20px auto;display:flex;justify-content:center;flex-wrap:wrap;gap:12px}
+nav button{border:0;background:#087f5b;color:#fff;padding:15px 28px;border-radius:15px;font-size:19px;cursor:pointer;transition:.2s}
+nav button:hover,nav button.active{background:#09976d;transform:translateY(-2px)}
+.section{display:none;width:94%;max-width:900px;margin:20px auto 40px}.section.active{display:block}
+.quran-box{background:rgba(10,10,10,.88);border-radius:22px;padding:25px}
+.quran-box label{display:block;font-size:20px;margin:0 0 8px}
+select,input,textarea{width:100%;border:2px solid #ddd;border-radius:15px;padding:15px;font-size:19px;background:#444;color:#fff;outline:0}
+select:focus,input:focus,textarea:focus{border-color:#12b886}
+#search{margin-top:8px;margin-bottom:20px}
+#surahList{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.surah{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:17px;padding:18px;cursor:pointer;transition:.2s;text-align:center}
+.surah:hover{background:#087f5b;transform:translateY(-3px)}.surah strong{font-size:23px}.surah-number{color:#65dcb3;margin-bottom:8px}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
+.card{background:rgba(10,10,10,.88);border-radius:20px;padding:22px;line-height:2;font-size:18px}.card h3{color:#5de0b2;margin-top:0}
+.comment-form{background:rgba(10,10,10,.88);padding:22px;border-radius:20px;margin-bottom:20px}
+.comment-form input,.comment-form textarea{margin-bottom:12px}.comment-form textarea{min-height:130px;resize:vertical}
+.main-btn{border:0;background:#087f5b;color:#fff;border-radius:14px;padding:13px 25px;font-size:18px;cursor:pointer}.main-btn:hover{background:#09976d}.main-btn:disabled{opacity:.6;cursor:not-allowed}
+.comment{background:rgba(10,10,10,.88);padding:18px;border-radius:18px;margin-bottom:12px}
+.comment-name{color:#5de0b2;font-size:19px;font-weight:bold}.comment-text{margin-top:8px;line-height:1.8;word-break:break-word}
+#player{display:none;position:fixed;bottom:15px;left:15px;right:15px;max-width:650px;margin:auto;background:rgba(0,0,0,.95);border:1px solid #159a72;border-radius:20px;padding:15px;z-index:9999;box-shadow:0 5px 30px rgba(0,0,0,.5)}
+#playerTitle{text-align:center;color:#5de0b2;font-size:19px;margin-bottom:10px}#audio{width:100%}
+.close-player{position:absolute;left:10px;top:5px;border:0;background:transparent;color:#fff;font-size:25px;cursor:pointer}
+.whatsapp{position:fixed;bottom:25px;left:25px;width:70px;height:70px;border-radius:50%;background:#20d568;display:flex;justify-content:center;align-items:center;font-size:37px;text-decoration:none;z-index:9000;box-shadow:0 4px 15px rgba(0,0,0,.3)}
+footer{text-align:center;padding:35px 10px 100px;font-size:20px;color:#eee}
+@media(max-width:650px){
+header h1{font-size:27px}.wird-cards{grid-template-columns:1fr}
+nav button{flex:1 1 40%;padding:13px 10px;font-size:17px}
+#surahList,.cards{grid-template-columns:1fr}.quran-box{padding:18px}
+.whatsapp{width:65px;height:65px;left:20px;bottom:20px}
 }
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-
-    background:
-        linear-gradient(rgba(4, 55, 38, 0.72), rgba(4, 55, 38, 0.72)),
-        url("https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=1600&q=80")
-        center center / cover fixed no-repeat;
-
-    color: #222;
-}
-
-header {
-    background: #087f5b;
-    color: white;
-    text-align: center;
-    padding: 25px 15px;
-}
-
-header h1 {
-    margin: 0 0 8px;
-}
-
-header p {
-    margin: 0;
-}
-
-nav {
-    background: white;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-nav button {
-    border: none;
-    background: #087f5b;
-    color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-}
-
-nav button:hover {
-    background: #056b4d;
-}
-
-.section {
-    display: none;
-    padding: 20px;
-    max-width: 1100px;
-    margin: auto;
-}
-
-.section.active {
-    display: block;
-}
-
-.controls {
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-}
-
-select,
-input,
-textarea {
-    width: 100%;
-    padding: 12px;
-    margin-top: 8px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-textarea {
-    resize: vertical;
-    min-height: 120px;
-}
-
-.surah-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 12px;
-}
-
-.surah {
-    background: white;
-    padding: 18px;
-    border-radius: 12px;
-    text-align: center;
-    cursor: pointer;
-    border: 1px solid #e5e5e5;
-    transition: 0.2s;
-}
-
-.surah:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.surah-number {
-    color: #087f5b;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    line-height: 2;
-}
-
-.card h3 {
-    color: #087f5b;
-    margin-top: 0;
-}
-
-.source {
-    color: #777;
-    font-size: 14px;
-}
-
-/* =========================
-   وردك اليومي
-========================= */
-
-.daily-wird {
-    background: rgba(255,255,255,0.97);
-    padding: 25px;
-    border-radius: 18px;
-    margin: 20px auto;
-    max-width: 1100px;
-    box-shadow: 0 5px 18px rgba(0,0,0,0.15);
-    text-align: center;
-}
-
-.daily-wird h2 {
-    color: #087f5b;
-    margin-top: 0;
-    font-size: 28px;
-}
-
-.daily-wird > p {
-    font-size: 17px;
-}
-
-.wird-card {
-    background: #f4f8f6;
-    padding: 18px;
-    border-radius: 14px;
-    margin: 15px 0;
-    line-height: 2;
-    border: 1px solid #e2eee9;
-}
-
-.wird-card h3 {
-    color: #087f5b;
-    margin-top: 0;
-}
-
-.wird-button {
-    border: none;
-    background: #087f5b;
-    color: white;
-    padding: 12px 22px;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 8px;
-}
-
-.wird-button:hover {
-    background: #056b4d;
-}
-
-.wird-button.done {
-    background: #555;
-}
-
-.wird-progress {
-    width: 100%;
-    height: 16px;
-    background: #ddd;
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 20px 0 10px;
-}
-
-#wirdProgress {
-    width: 0%;
-    height: 100%;
-    background: #087f5b;
-    transition: 0.4s;
-}
-
-.wird-status {
-    font-weight: bold;
-    color: #087f5b;
-    margin-top: 10px;
-    font-size: 17px;
-}
-
-/* =========================
-   التعليقات
-========================= */
-
-.comments-box {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    margin-bottom: 25px;
-}
-
-.comments-box button {
-    width: 100%;
-    margin-top: 12px;
-    padding: 13px;
-    border: none;
-    border-radius: 8px;
-    background: #087f5b;
-    color: white;
-    font-size: 17px;
-    cursor: pointer;
-}
-
-.comments-box button:hover {
-    background: #056b4d;
-}
-
-.comment-card {
-    background: white;
-    padding: 17px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    border-right: 4px solid #087f5b;
-}
-
-.comment-name {
-    color: #087f5b;
-    font-weight: bold;
-    font-size: 17px;
-}
-
-.comment-text {
-    margin: 8px 0 0;
-    line-height: 1.8;
-    word-break: break-word;
-}
-
-.comments-title {
-    margin-top: 35px;
-    margin-bottom: 15px;
-}
-
-/* =========================
-   واتساب
-========================= */
-
-.whatsapp {
-    position: fixed;
-    left: 20px;
-    bottom: 100px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: #25D366;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 30px;
-    font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    z-index: 9999;
-}
-
-.whatsapp:hover {
-    transform: scale(1.08);
-}
-
-/* =========================
-   مشغل الصوت
-========================= */
-
-.player {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background: white;
-    padding: 15px;
-    box-shadow: 0 -3px 12px rgba(0,0,0,0.15);
-    display: none;
-    z-index: 9998;
-}
-
-.player button {
-    background: #d63031;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 7px;
-    cursor: pointer;
-    margin-bottom: 8px;
-}
-
-audio {
-    width: 100%;
-}
-
-footer {
-    text-align: center;
-    padding: 30px 15px;
-    color: white;
-}
-
 </style>
 </head>
-
 <body>
 
 <header>
-
-<h1>📖 القرآن الكريم</h1>
-
-<p>
-القرآن الكريم والأحاديث والأذكار
-</p>
-
+<h1>📖 موقع القرآن الكريم</h1>
+<p>القرآن الكريم والأحاديث والأذكار</p>
 </header>
 
-
-<!-- =========================
-     وردك اليومي
-========================= -->
-
-<section class="daily-wird">
-
+<div class="daily-wird">
 <h2>🌙 وردك اليومي</h2>
-
-<p>
-اجعل لك كل يوم نصيبًا من القرآن والذكر 🤍
-</p>
-
-<div class="wird-card">
-
-<h3>📖 ورد القرآن</h3>
-
-<p>
-اقرأ اليوم سورة الإخلاص والفلق والناس،
-أو اختر أي سورة من قسم القرآن الكريم.
-</p>
-
-<button
-class="wird-button"
-id="quranWirdButton"
-onclick="completeWird('quran')">
-
-✅ أنجزت ورد القرآن
-
-</button>
-
+<div class="wird-cards">
+<div class="wird-card" id="wird-quran" onclick="completeWird('quran')">📖<br>القرآن</div>
+<div class="wird-card" id="wird-zekr" onclick="completeWird('zekr')">📿<br>الذكر</div>
+<div class="wird-card" id="wird-dua" onclick="completeWird('dua')">🤲<br>الدعاء</div>
 </div>
-
-
-<div class="wird-card">
-
-<h3>📿 ذكر اليوم</h3>
-
-<p>
-سبحان الله وبحمده
-</p>
-
-<button
-class="wird-button"
-id="zekrWirdButton"
-onclick="completeWird('zekr')">
-
-✅ أنجزت الذكر
-
-</button>
-
+<div class="progress-container"><div id="wirdProgress"></div></div>
+<div id="wirdStatus">0 من 3 تم إنجازها</div>
 </div>
-
-
-<div class="wird-card">
-
-<h3>🤲 دعاء اليوم</h3>
-
-<p>
-رَبِّ زِدْنِي عِلْمًا.
-</p>
-
-<div class="source">
-سورة طه: 114
-</div>
-
-<button
-class="wird-button"
-id="duaWirdButton"
-onclick="completeWird('dua')">
-
-✅ أنجزت الدعاء
-
-</button>
-
-</div>
-
-
-<div class="wird-progress">
-
-<div id="wirdProgress"></div>
-
-</div>
-
-<div
-id="wirdStatus"
-class="wird-status">
-
-0 من 3 تم إنجازها
-
-</div>
-
-</section>
-
 
 <nav>
-
-<button onclick="showSection('quran')">
-📖 القرآن
-</button>
-
-<button onclick="showSection('hadith')">
-📜 الأحاديث
-</button>
-
-<button onclick="showSection('morning')">
-🌅 أذكار الصباح
-</button>
-
-<button onclick="showSection('evening')">
-🌙 أذكار المساء
-</button>
-
-<button onclick="showSection('comments')">
-💬 التعليقات
-</button>
-
+<button class="active" onclick="showSection('quranSection',this)">📖 القرآن</button>
+<button onclick="showSection('hadithSection',this)">📜 الأحاديث</button>
+<button onclick="showSection('morningSection',this)">🌅 أذكار الصباح</button>
+<button onclick="showSection('eveningSection',this)">🌙 أذكار المساء</button>
+<button onclick="showSection('commentsSection',this)">💬 التعليقات</button>
 </nav>
 
-
-<!-- =========================
-     القرآن
-========================= -->
-
-<section id="quran" class="section active">
-
-<div class="controls">
-
-<label>
-🎙️ اختر القارئ:
-</label>
-
+<section id="quranSection" class="section active">
+<div class="quran-box">
+<label>🎙️ اختر القارئ:</label>
 <select id="reciter">
-
-<option value="mishary">
-مشاري راشد العفاسي
-</option>
-
-<option value="sudais">
-عبد الرحمن السديس
-</option>
-
-<option value="maher">
-ماهر المعيقلي
-</option>
-
-<option value="shuraim">
-سعود الشريم
-</option>
-
-<option value="minshawi">
-محمد صديق المنشاوي
-</option>
-
-<option value="husary">
-محمود خليل الحصري
-</option>
-
-<option value="abdulbasit">
-عبد الباسط عبد الصمد
-</option>
-
-<option value="mustafa">
-مصطفى إسماعيل
-</option>
-
-<option value="banna">
-محمود علي البنا
-</option>
-
-<option value="shatri">
-أبو بكر الشاطري
-</option>
-
-<option value="dossary">
-ياسر الدوسري
-</option>
-
-<option value="faris">
-فارس عباد
-</option>
-
-<option value="ghamdi">
-سعد الغامدي
-</option>
-
-<option value="ajmi">
-أحمد العجمي
-</option>
-
-<option value="refai">
-هاني الرفاعي
-</option>
-
-<option value="jalil">
-خالد الجليل
-</option>
-
-<option value="qatami">
-ناصر القطامي
-</option>
-
-<option value="abkar">
-إدريس أبكر
-</option>
-
-<option value="jibril">
-محمد جبريل
-</option>
-
-<option value="jaber">
-علي جابر
-</option>
-
+<option value="mishary">مشاري راشد العفاسي</option>
+<option value="sudais">عبد الرحمن السديس</option>
+<option value="maher">ماهر المعيقلي</option>
+<option value="shuraim">سعود الشريم</option>
+<option value="minshawi">محمد صديق المنشاوي</option>
+<option value="husary">محمود خليل الحصري</option>
+<option value="abdulbasit">عبد الباسط عبد الصمد</option>
+<option value="mustafa">مصطفى إسماعيل</option>
+<option value="banna">محمود علي البنا</option>
+<option value="shatri">أبو بكر الشاطري</option>
+<option value="dossary">ياسر الدوسري</option>
+<option value="faris">فارس عباد</option>
+<option value="ghamdi">سعد الغامدي</option>
+<option value="ajmi">أحمد العجمي</option>
+<option value="refai">هاني الرفاعي</option>
+<option value="jalil">عبد الله خياط</option>
+<option value="qatami">ناصر القطامي</option>
+<option value="abkar">إدريس أبكر</option>
+<option value="jibril">محمد جبريل</option>
+<option value="jaber">عبد المحسن القاسم</option>
 </select>
 
-
-<br>
-
-
-<label>
-🔎 ابحث عن سورة:
-</label>
-
-<input
-type="text"
-id="search"
-placeholder="اكتب اسم السورة..."
-oninput="searchSurah()"
->
-
+<label>🔎 ابحث عن سورة:</label>
+<input type="text" id="search" placeholder="اكتب اسم السورة مثل: الناس" oninput="searchSurah()">
+<div id="surahList"></div>
 </div>
-
-
-<div
-id="surahList"
-class="surah-grid">
-
-</div>
-
 </section>
 
-
-<!-- =========================
-     الأحاديث
-========================= -->
-
-<section id="hadith" class="section">
-
-<h2>
-📜 أحاديث نبوية
-</h2>
-
-
-<div class="card">
-
-<h3>
-حديث 1
-</h3>
-
-<p>
-إنما الأعمال بالنيات، وإنما لكل امرئ ما نوى.
-</p>
-
-<div class="source">
-رواه البخاري ومسلم
+<section id="hadithSection" class="section">
+<div class="cards">
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «إنما الأعمال بالنيات»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «من لا يرحم لا يُرحم»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «المسلم من سلم المسلمون من لسانه ويده»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «خيركم من تعلم القرآن وعلمه»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «الكلمة الطيبة صدقة»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «يسروا ولا تعسروا»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «أحب الأعمال إلى الله أدومها وإن قل»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «الطهور شطر الإيمان»</div>
+<div class="card"><h3>📜 حديث</h3>قال رسول الله ﷺ: «الدين النصيحة»</div>
 </div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 2
-</h3>
-
-<p>
-من كان يؤمن بالله واليوم الآخر فليقل خيرًا أو ليصمت.
-</p>
-
-<div class="source">
-رواه البخاري ومسلم
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 3
-</h3>
-
-<p>
-لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه.
-</p>
-
-<div class="source">
-رواه البخاري ومسلم
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 4
-</h3>
-
-<p>
-المسلم من سلم المسلمون من لسانه ويده.
-</p>
-
-<div class="source">
-رواه البخاري ومسلم
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 5
-</h3>
-
-<p>
-من كان يؤمن بالله واليوم الآخر فلا يؤذ جاره،
-ومن كان يؤمن بالله واليوم الآخر فليكرم ضيفه.
-</p>
-
-<div class="source">
-رواه البخاري
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 6
-</h3>
-
-<p>
-لا تغضب.
-</p>
-
-<div class="source">
-رواه البخاري
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 7
-</h3>
-
-<p>
-من لا يَرحم لا يُرحم.
-</p>
-
-<div class="source">
-رواه البخاري ومسلم
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 8
-</h3>
-
-<p>
-خيركم من تعلم القرآن وعلمه.
-</p>
-
-<div class="source">
-رواه البخاري
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 9
-</h3>
-
-<p>
-الدين النصيحة.
-</p>
-
-<div class="source">
-رواه مسلم
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-حديث 10
-</h3>
-
-<p>
-من سلك طريقًا يلتمس فيه علمًا سهل الله له به طريقًا إلى الجنة.
-</p>
-
-<div class="source">
-رواه مسلم
-</div>
-
-</div>
-
 </section>
 
-
-<!-- =========================
-     أذكار الصباح
-========================= -->
-
-<section id="morning" class="section">
-
-<h2>
-🌅 أذكار الصباح
-</h2>
-
-
-<div class="card">
-
-<h3>
-آية الكرسي
-</h3>
-
-<p>
-اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ
-لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ...
-</p>
-
+<section id="morningSection" class="section">
+<div class="cards">
+<div class="card"><h3>🌅 آية الكرسي</h3>اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ...</div>
+<div class="card"><h3>🌅 ذكر</h3>أصبحنا وأصبح الملك لله، والحمد لله.</div>
+<div class="card"><h3>🌅 ذكر</h3>سبحان الله وبحمده.</div>
+<div class="card"><h3>🌅 ذكر</h3>لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.</div>
+<div class="card"><h3>🌅 استغفار</h3>أستغفر الله وأتوب إليه.</div>
+<div class="card"><h3>🌅 الصلاة على النبي ﷺ</h3>اللهم صل وسلم وبارك على نبينا محمد ﷺ.</div>
 </div>
-
-
-<div class="card">
-
-<h3>
-ذكر
-</h3>
-
-<p>
-أصبحنا وأصبح الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له،
-له الملك وله الحمد وهو على كل شيء قدير.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ذكر
-</h3>
-
-<p>
-سبحان الله وبحمده.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-دعاء
-</h3>
-
-<p>
-رَبِّ اشْرَحْ لِي صَدْرِي ۝ وَيَسِّرْ لِي أَمْرِي.
-</p>
-
-<div class="source">
-سورة طه
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-دعاء
-</h3>
-
-<p>
-رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً
-وَفِي الْآخِرَةِ حَسَنَةً
-وَقِنَا عَذَابَ النَّارِ.
-</p>
-
-<div class="source">
-سورة البقرة: 201
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-دعاء
-</h3>
-
-<p>
-رَبِّ زِدْنِي عِلْمًا.
-</p>
-
-<div class="source">
-سورة طه: 114
-</div>
-
-</div>
-
 </section>
 
-
-<!-- =========================
-     أذكار المساء
-========================= -->
-
-<section id="evening" class="section">
-
-<h2>
-🌙 أذكار المساء
-</h2>
-
-
-<div class="card">
-
-<h3>
-ذكر
-</h3>
-
-<p>
-أمسينا وأمسى الملك لله، والحمد لله، لا إله إلا الله وحده لا شريك له،
-له الملك وله الحمد وهو على كل شيء قدير.
-</p>
-
+<section id="eveningSection" class="section">
+<div class="cards">
+<div class="card"><h3>🌙 ذكر</h3>أمسينا وأمسى الملك لله، والحمد لله.</div>
+<div class="card"><h3>🌙 آية الكرسي</h3>اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...</div>
+<div class="card"><h3>🌙 ذكر</h3>سبحان الله وبحمده.</div>
+<div class="card"><h3>🌙 ذكر</h3>لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير.</div>
+<div class="card"><h3>🌙 استغفار</h3>أستغفر الله وأتوب إليه.</div>
+<div class="card"><h3>🌙 الصلاة على النبي ﷺ</h3>اللهم صل وسلم وبارك على نبينا محمد ﷺ.</div>
 </div>
-
-
-<div class="card">
-
-<h3>
-ذكر
-</h3>
-
-<p>
-سبحان الله وبحمده.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ذكر
-</h3>
-
-<p>
-أعوذ بكلمات الله التامات من شر ما خلق.
-</p>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-دعاء
-</h3>
-
-<p>
-رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا
-وَهَبْ لَنَا مِنْ لَدُنْكَ رَحْمَةً ۚ
-إِنَّكَ أَنْتَ الْوَهَّابُ.
-</p>
-
-<div class="source">
-سورة آل عمران: 8
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-دعاء
-</h3>
-
-<p>
-رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ
-يَوْمَ يَقُومُ الْحِسَابُ.
-</p>
-
-<div class="source">
-سورة إبراهيم: 41
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-دعاء
-</h3>
-
-<p>
-حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۖ
-عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ.
-</p>
-
-<div class="source">
-سورة التوبة: 129
-</div>
-
-</div>
-
 </section>
 
-
-<!-- =========================
-     التعليقات
-========================= -->
-
-<section id="comments" class="section">
-
-<h2>
-💬 آراء الزوار وتعليقاتهم
-</h2>
-
-
-<div class="comments-box">
-
-<label>
-👤 اسمك:
-</label>
-
-<input
-type="text"
-id="commentName"
-placeholder="اكتب اسمك"
-maxlength="50"
->
-
-
-<label>
-💬 تعليقك:
-</label>
-
-<textarea
-id="commentText"
-placeholder="اكتب تعليقك هنا..."
-maxlength="500"
-></textarea>
-
-
-<button onclick="addComment()">
-📤 إرسال التعليق
-</button>
-
+<section id="commentsSection" class="section">
+<div class="comment-form">
+<h2>💬 اكتب تعليقك</h2>
+<input type="text" id="commentName" placeholder="اسمك" maxlength="50">
+<textarea id="commentText" placeholder="اكتب تعليقك هنا..." maxlength="500"></textarea>
+<button class="main-btn" id="commentButton" onclick="addComment()">إرسال التعليق</button>
 </div>
-
-
-<h2 class="comments-title">
-🗣️ تعليقات الزوار
-</h2>
-
-
-<div id="commentsList">
-
-جاري تحميل التعليقات...
-
-</div>
-
+<div id="commentsList"><div class="card">جاري تحميل التعليقات...</div></div>
 </section>
 
-
-<!-- =========================
-     مشغل الصوت
-========================= -->
-
-<div
-class="player"
-id="player">
-
-<button onclick="closePlayer()">
-✖ إغلاق
-</button>
-
-<div id="playerTitle"></div>
-
-<audio
-id="audio"
-controls>
-</audio>
-
+<div id="player">
+<button class="close-player" onclick="closePlayer()">×</button>
+<div id="playerTitle">جاري التشغيل...</div>
+<audio id="audio" controls preload="none"></audio>
 </div>
 
+<a class="whatsapp" href="https://wa.me/201080969038" target="_blank" title="تواصل معنا">💬</a>
 
-<!-- =========================
-     واتساب
-========================= -->
-
-<a
-class="whatsapp"
-href="https://wa.me/201080969038"
-target="_blank"
-rel="noopener noreferrer"
-title="تواصل معي على واتساب"
-aria-label="تواصل معي على واتساب">
-
-💬
-
-</a>
-
-
-<footer>
-
-<p>
-© 2026 - موقع القرآن الكريم
-</p>
-
-</footer>
-
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<footer>© 2026 - موقع القرآن الكريم</footer>
 
 <script>
-
-/* =========================
-   Supabase
-========================= */
-
-const SUPABASE_URL =
-"https://lqwtgdjorakdyksinfjy.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_sPvFBfXQe2WJHS3tXrv78A_cce3t0Er";
-
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =========================
-   السور
-========================= */
+"use strict";
 
 const surahs = [
-
-"الفاتحة",
-"البقرة",
-"آل عمران",
-"النساء",
-"المائدة",
-"الأنعام",
-"الأعراف",
-"الأنفال",
-"التوبة",
-"يونس",
-"هود",
-"يوسف",
-"الرعد",
-"إبراهيم",
-"الحجر",
-"النحل",
-"الإسراء",
-"الكهف",
-"مريم",
-"طه",
-"الأنبياء",
-"الحج",
-"المؤمنون",
-"النور",
-"الفرقان",
-"الشعراء",
-"النمل",
-"القصص",
-"العنكبوت",
-"الروم",
-"لقمان",
-"السجدة",
-"الأحزاب",
-"سبأ",
-"فاطر",
-"يس",
-"الصافات",
-"ص",
-"الزمر",
-"غافر",
-"فصلت",
-"الشورى",
-"الزخرف",
-"الدخان",
-"الجاثية",
-"الأحقاف",
-"محمد",
-"الفتح",
-"الحجرات",
-"ق",
-"الذاريات",
-"الطور",
-"النجم",
-"القمر",
-"الرحمن",
-"الواقعة",
-"الحديد",
-"المجادلة",
-"الحشر",
-"الممتحنة",
-"الصف",
-"الجمعة",
-"المنافقون",
-"التغابن",
-"الطلاق",
-"التحريم",
-"الملك",
-"القلم",
-"الحاقة",
-"المعارج",
-"نوح",
-"الجن",
-"المزمل",
-"المدثر",
-"القيامة",
-"الإنسان",
-"المرسلات",
-"النبأ",
-"النازعات",
-"عبس",
-"التكوير",
-"الانفطار",
-"المطففين",
-"الانشقاق",
-"البروج",
-"الطارق",
-"الأعلى",
-"الغاشية",
-"الفجر",
-"البلد",
-"الشمس",
-"الليل",
-"الضحى",
-"الشرح",
-"التين",
-"العلق",
-"القدر",
-"البينة",
-"الزلزلة",
-"العاديات",
-"القارعة",
-"التكاثر",
-"العصر",
-"الهمزة",
-"الفيل",
-"قريش",
-"الماعون",
-"الكوثر",
-"الكافرون",
-"النصر",
-"المسد",
-"الإخلاص",
-"الفلق",
-"الناس"
-
+"الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+"هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+"الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+"لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+"فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+"الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+"الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+"نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+"التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+"الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+"القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+"المسد","الإخلاص","الفلق","الناس"
 ];
 
-
-/* =========================
-   القراء
-========================= */
-
 const servers = {
-
-mishary:
-"https://server8.mp3quran.net/afs/",
-
-sudais:
-"https://server11.mp3quran.net/sds/",
-
-maher:
-"https://server12.mp3quran.net/maher/",
-
-shuraim:
-"https://server7.mp3quran.net/shur/",
-
-minshawi:
-"https://server10.mp3quran.net/minsh/",
-
-husary:
-"https://server13.mp3quran.net/husr/",
-
-abdulbasit:
-"https://server7.mp3quran.net/basit/",
-
-mustafa:
-"https://server8.mp3quran.net/mustafa/",
-
-banna:
-"https://server7.mp3quran.net/bna/",
-
-shatri:
-"https://server11.mp3quran.net/shatri/",
-
-dossary:
-"https://server11.mp3quran.net/yasser/",
-
-faris:
-"https://server8.mp3quran.net/frs_a/",
-
-ghamdi:
-"https://server17.mp3quran.net/s_gmd/",
-
-ajmi:
-"https://server10.mp3quran.net/ajm/",
-
-refai:
-"https://server8.mp3quran.net/hani/",
-
-jalil:
-"https://server10.mp3quran.net/jleel/",
-
-qatami:
-"https://server6.mp3quran.net/qtm/",
-
-abkar:
-"https://server6.mp3quran.net/abkar/",
-
-jibril:
-"https://server8.mp3quran.net/jbrl/",
-
-jaber:
-"https://server11.mp3quran.net/a_jbr/"
-
+mishary:"https://server8.mp3quran.net/afs/",
+sudais:"https://server11.mp3quran.net/sds/",
+maher:"https://server12.mp3quran.net/maher/",
+shuraim:"https://server7.mp3quran.net/shur/",
+minshawi:"https://server10.mp3quran.net/minsh/",
+husary:"https://server13.mp3quran.net/husr/",
+abdulbasit:"https://server7.mp3quran.net/basit/",
+mustafa:"https://server8.mp3quran.net/mustafa/",
+banna:"https://server7.mp3quran.net/bna/",
+shatri:"https://server11.mp3quran.net/shatri/",
+dossary:"https://server11.mp3quran.net/yasser/",
+faris:"https://server8.mp3quran.net/frs_a/",
+ghamdi:"https://server17.mp3quran.net/s_gmd/",
+ajmi:"https://server10.mp3quran.net/ajm/",
+refai:"https://server8.mp3quran.net/hani/",
+jalil:"https://server10.mp3quran.net/jleel/",
+qatami:"https://server6.mp3quran.net/qtm/",
+abkar:"https://server6.mp3quran.net/abkar/",
+jibril:"https://server8.mp3quran.net/jbrl/",
+jaber:"https://server11.mp3quran.net/a_jbr/"
 };
 
-
-/* =========================
-   عرض السور
-========================= */
-
-const list =
-document.getElementById("surahList");
-
-
 function displaySurahs(data = surahs) {
-
+const list = document.getElementById("surahList");
+if (!list) return;
 list.innerHTML = "";
 
-data.forEach((name) => {
+if (!Array.isArray(data) || data.length === 0) {
+list.innerHTML = '<div class="card" style="grid-column:1/-1;text-align:center">❌ لم يتم العثور على السورة</div>';
+return;
+}
 
-const div =
-document.createElement("div");
-
-div.className =
-"surah";
-
-const originalNumber =
-surahs.indexOf(name) + 1;
-
+data.forEach(name => {
+const number = surahs.indexOf(name) + 1;
+const div = document.createElement("div");
+div.className = "surah";
 div.innerHTML = `
-
-<div class="surah-number">
-
-سورة رقم ${originalNumber}
-
-</div>
-
-<strong>
-${name}
-</strong>
-
-`;
-
-div.onclick = () =>
-playSurah(
-originalNumber,
-name
-);
-
+<div class="surah-number">سورة رقم ${number}</div>
+<strong>${escapeHTML(name)}</strong>
+<div style="margin-top:10px;color:#64dcb3">🔊 اضغط للاستماع</div>`;
+div.addEventListener("click", () => playSurah(number,name));
 list.appendChild(div);
-
 });
-
 }
-
-
-/* =========================
-   تشغيل السورة
-========================= */
-
-function playSurah(number, name) {
-
-const reciter =
-document.getElementById("reciter").value;
-
-const server =
-servers[reciter];
-
-const numberString =
-String(number).padStart(3, "0");
-
-const audioUrl =
-server +
-numberString +
-".mp3";
-
-const audio =
-document.getElementById("audio");
-
-document.getElementById("playerTitle")
-.innerText =
-"🎧 سورة " + name;
-
-audio.src =
-audioUrl;
-
-document.getElementById("player")
-.style.display =
-"block";
-
-audio.play().catch(() => {});
-
-}
-
-
-/* =========================
-   إغلاق المشغل
-========================= */
-
-function closePlayer() {
-
-const audio =
-document.getElementById("audio");
-
-audio.pause();
-
-audio.src = "";
-
-document.getElementById("player")
-.style.display =
-"none";
-
-}
-
-
-/* =========================
-   البحث عن سورة
-========================= */
 
 function searchSurah() {
-
-const search =
-document
-.getElementById("search")
-.value
-.trim();
-
-const result =
-surahs.filter(name =>
-name.includes(search)
-);
-
-displaySurahs(result);
-
+const input = document.getElementById("search");
+if (!input) return;
+const value = input.value.trim().toLowerCase();
+if (!value) { displaySurahs(); return; }
+displaySurahs(surahs.filter(name => name.toLowerCase().includes(value)));
 }
 
+function playSurah(number,name) {
+const reciter = document.getElementById("reciter");
+const audio = document.getElementById("audio");
+const player = document.getElementById("player");
+const title = document.getElementById("playerTitle");
+if (!reciter || !audio || !player || !title) return;
 
-/* =========================
-   التنقل بين الأقسام
-========================= */
+const server = servers[reciter.value];
+if (!server) { alert("حدث خطأ في اختيار القارئ."); return; }
 
-function showSection(sectionId) {
+const url = server + String(number).padStart(3,"0") + ".mp3";
+title.textContent = "🎧 سورة " + name + " - " + reciter.options[reciter.selectedIndex].text;
+audio.src = url;
+player.style.display = "block";
+audio.load();
 
-document
-.querySelectorAll(".section")
-.forEach(section => {
-
-section.classList.remove("active");
-
-});
-
-
-document
-.getElementById(sectionId)
-.classList.add("active");
-
-
-window.scrollTo({
-
-top: 0,
-
-behavior: "smooth"
-
-});
-
-
-if (sectionId === "comments") {
-
-loadComments();
-
+const promise = audio.play();
+if (promise && typeof promise.catch === "function") {
+promise.catch(() => console.log("اضغط تشغيل من مشغل الصوت إذا لم يبدأ تلقائيًا."));
+}
 }
 
+function closePlayer() {
+const audio = document.getElementById("audio");
+const player = document.getElementById("player");
+if (audio) { audio.pause(); audio.removeAttribute("src"); audio.load(); }
+if (player) player.style.display = "none";
 }
 
+function showSection(sectionId,button) {
+document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+const target = document.getElementById(sectionId);
+if (target) target.classList.add("active");
 
-/* =========================
-   حماية النص
-========================= */
+document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+if (button) button.classList.add("active");
+
+if (sectionId === "commentsSection") loadComments();
+}
 
 function escapeHTML(text) {
-
-const div =
-document.createElement("div");
-
-div.textContent =
-text;
-
+const div = document.createElement("div");
+div.textContent = String(text ?? "");
 return div.innerHTML;
-
 }
 
+const SUPABASE_URL = "https://lqwtgdjorakdyksinfjy.supabase.co";
+const SUPABASE_KEY = "sb_publishable_sPvFBfXQe2WJHS3tXrv78A_cce3t0Er";
+let supabaseClient = null;
 
-/* =========================
-   تحميل التعليقات
-========================= */
+try {
+if (window.supabase && typeof window.supabase.createClient === "function") {
+supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+}
+} catch (error) {
+console.error("Supabase error:",error);
+supabaseClient = null;
+}
 
 async function loadComments() {
+const container = document.getElementById("commentsList");
+if (!container) return;
 
-const list =
-document.getElementById("commentsList");
-
-list.innerHTML =
-"⏳ جاري تحميل التعليقات...";
-
-
-const { data, error } =
-await supabaseClient
-.from("comments")
-.select("*")
-.order("id", {
-ascending: false
-});
-
-
-if (error) {
-
-console.error(error);
-
-list.innerHTML =
-"❌ حصل خطأ في تحميل التعليقات.";
-
+if (!supabaseClient) {
+container.innerHTML = '<div class="card">💬 التعليقات غير متاحة حاليًا.</div>';
 return;
-
 }
 
+container.innerHTML = '<div class="card">جاري تحميل التعليقات...</div>';
+
+try {
+const {data,error} = await supabaseClient.from("comments").select("*").order("id",{ascending:false});
+if (error) throw error;
 
 if (!data || data.length === 0) {
-
-list.innerHTML =
-"😊 لسه مفيش تعليقات. كن أول واحد يكتب تعليق!";
-
+container.innerHTML = '<div class="card">💬 لا توجد تعليقات حتى الآن.</div>';
 return;
-
 }
 
-
-list.innerHTML =
-data.map(item => `
-
-<div class="comment-card">
-
-<div class="comment-name">
-
-👤 ${escapeHTML(
-item.name || "زائر"
-)}
-
-</div>
-
-<p class="comment-text">
-
-${escapeHTML(
-item.comment || ""
-)}
-
-</p>
-
-</div>
-
-`).join("");
-
+container.innerHTML = "";
+data.forEach(comment => {
+const div = document.createElement("div");
+div.className = "comment";
+div.innerHTML = `
+<div class="comment-name">👤 ${escapeHTML(comment.name)}</div>
+<div class="comment-text">${escapeHTML(comment.comment)}</div>`;
+container.appendChild(div);
+});
+} catch (error) {
+console.error("Comments error:",error);
+container.innerHTML = '<div class="card">⚠️ تعذر تحميل التعليقات حاليًا.</div>';
 }
-
-
-/* =========================
-   إضافة تعليق
-========================= */
+}
 
 async function addComment() {
+const nameInput = document.getElementById("commentName");
+const textInput = document.getElementById("commentText");
+const button = document.getElementById("commentButton");
+if (!nameInput || !textInput || !button) return;
 
-const name =
-document
-.getElementById("commentName")
-.value
-.trim();
+const name = nameInput.value.trim();
+const comment = textInput.value.trim();
 
+if (!name) { alert("اكتب اسمك أولًا."); nameInput.focus(); return; }
+if (!comment) { alert("اكتب التعليق أولًا."); textInput.focus(); return; }
+if (!supabaseClient) { alert("التعليقات غير متاحة حاليًا."); return; }
 
-const comment =
-document
-.getElementById("commentText")
-.value
-.trim();
+button.disabled = true;
+button.textContent = "جاري الإرسال...";
 
-
-if (!name) {
-
-alert(
-"⚠️ اكتب اسمك الأول"
-);
-
-return;
-
+try {
+const {error} = await supabaseClient.from("comments").insert([{name,comment}]);
+if (error) throw error;
+nameInput.value = "";
+textInput.value = "";
+alert("✅ تم إرسال تعليقك بنجاح");
+await loadComments();
+} catch (error) {
+console.error("Add comment error:",error);
+alert("❌ حصل خطأ أثناء إرسال التعليق");
+} finally {
+button.disabled = false;
+button.textContent = "إرسال التعليق";
+}
 }
 
+const WIRD_KEY = "quran_daily_wird";
 
-if (!comment) {
-
-alert(
-"⚠️ اكتب التعليق الأول"
-);
-
-return;
-
+function getWirdData() {
+const today = new Date().toISOString().slice(0,10);
+try {
+const saved = localStorage.getItem(WIRD_KEY);
+if (!saved) return {date:today,quran:false,zekr:false,dua:false};
+const data = JSON.parse(saved);
+if (!data || data.date !== today) return {date:today,quran:false,zekr:false,dua:false};
+return data;
+} catch {
+return {date:today,quran:false,zekr:false,dua:false};
+}
 }
 
-
-if (name.length > 50) {
-
-alert(
-"⚠️ الاسم طويل جدًا"
-);
-
-return;
-
+function saveWirdData(data) {
+try { localStorage.setItem(WIRD_KEY,JSON.stringify(data)); } catch {}
 }
 
-
-if (comment.length > 500) {
-
-alert(
-"⚠️ التعليق طويل جدًا"
-);
-
-return;
-
+function completeWird(type) {
+if (!["quran","zekr","dua"].includes(type)) return;
+const data = getWirdData();
+data[type] = !data[type];
+saveWirdData(data);
+updateWird();
 }
 
+function updateWird() {
+const data = getWirdData();
+const types = ["quran","zekr","dua"];
+let completed = 0;
 
-const button =
-document.querySelector(
-".comments-box button"
-);
+types.forEach(type => {
+const card = document.getElementById("wird-" + type);
+if (data[type]) { completed++; if (card) card.classList.add("done"); }
+else if (card) card.classList.remove("done");
+});
 
-
-button.disabled =
-true;
-
-button.innerText =
-"⏳ جاري إرسال التعليق...";
-
-
-const { error } =
-await supabaseClient
-.from("comments")
-.insert([
-
-{
-
-name:
-name,
-
-comment:
-comment
-
+const progress = document.getElementById("wirdProgress");
+const status = document.getElementById("wirdStatus");
+if (progress) progress.style.width = ((completed / 3) * 100) + "%";
+if (status) status.textContent = completed + " من 3 تم إنجازها";
 }
 
-]);
-
-
-if (error) {
-
-console.error(error);
-
-alert(
-"❌ حصل خطأ أثناء إرسال التعليق."
-);
-
-button.disabled =
-false;
-
-button.innerText =
-"📤 إرسال التعليق";
-
-return;
-
-}
-
-
-document
-.getElementById("commentName")
-.value = "";
-
-
-document
-.getElementById("commentText")
-.value = "";
-
-
-al
+document.addEventListener("DOMContentLoaded",() => {
+displaySurahs();
+updateWird();
+});
+</script>
+</body>
+</html>
