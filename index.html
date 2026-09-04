@@ -13,61 +13,111 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-
-    background:
-        linear-gradient(rgba(4, 55, 38, 0.72), rgba(4, 55, 38, 0.72)),
-        url("https://images.unsplash.com/photo-1609599006353-e629aaabfeae?auto=format&fit=crop&w=1600&q=80")
-        center center / cover fixed no-repeat;
-
     color: #222;
+
+    /* خلفية إسلامية بدون أي صورة خارجية */
+    background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.07) 0 2px, transparent 3px),
+        linear-gradient(135deg, #063d2c, #087f5b, #03281d);
+
+    background-size: 45px 45px, 60px 60px, 100% 100%;
+    background-attachment: fixed;
 }
 
+
+/* =========================
+   الهيدر
+========================= */
+
 header {
-    background: #087f5b;
+    background:
+        linear-gradient(
+            rgba(0, 50, 35, 0.82),
+            rgba(0, 80, 55, 0.82)
+        );
+
     color: white;
     text-align: center;
-    padding: 25px 15px;
+    padding: 30px 15px;
+
+    border-bottom: 3px solid #d4af37;
 }
 
 header h1 {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
+    font-size: 30px;
 }
 
 header p {
     margin: 0;
+    font-size: 17px;
 }
 
+
+/* =========================
+   القائمة
+========================= */
+
 nav {
-    background: white;
+    background: rgba(255,255,255,0.97);
+
     display: flex;
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
+
     padding: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+
+    position: sticky;
+    top: 0;
+
+    z-index: 1000;
 }
 
 nav button {
     border: none;
+
     background: #087f5b;
     color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
+
+    padding: 11px 16px;
+
+    border-radius: 9px;
+
     cursor: pointer;
+
     font-size: 15px;
+
+    transition: 0.2s;
 }
 
 nav button:hover {
     background: #056b4d;
+    transform: translateY(-1px);
 }
+
+
+/* =========================
+   الأقسام
+========================= */
 
 .section {
     display: none;
+
     padding: 20px;
+
     max-width: 1100px;
+
     margin: auto;
 }
 
@@ -75,75 +125,151 @@ nav button:hover {
     display: block;
 }
 
+
+/* =========================
+   أدوات القرآن
+========================= */
+
 .controls {
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
+    background: rgba(255,255,255,0.97);
+
+    padding: 18px;
+
+    border-radius: 15px;
+
     margin-bottom: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,0.12);
+}
+
+.controls label {
+    display: block;
+
+    font-weight: bold;
+
+    margin-top: 5px;
+
+    color: #075c43;
 }
 
 select,
 input,
 textarea {
     width: 100%;
+
     padding: 12px;
+
     margin-top: 8px;
+
     border: 1px solid #ccc;
-    border-radius: 8px;
+
+    border-radius: 9px;
+
     font-size: 16px;
+
+    outline: none;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+    border-color: #087f5b;
+    box-shadow: 0 0 0 2px rgba(8,127,91,0.12);
 }
 
 textarea {
     resize: vertical;
+
     min-height: 120px;
 }
 
+
+/* =========================
+   السور
+========================= */
+
 .surah-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
     gap: 12px;
 }
 
 .surah {
-    background: white;
+    background: rgba(255,255,255,0.97);
+
     padding: 18px;
-    border-radius: 12px;
+
+    border-radius: 13px;
+
     text-align: center;
+
     cursor: pointer;
+
     border: 1px solid #e5e5e5;
+
     transition: 0.2s;
+
+    box-shadow:
+        0 2px 7px rgba(0,0,0,0.08);
 }
 
 .surah:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 6px 16px rgba(0,0,0,0.14);
+
+    border-color: #087f5b;
 }
 
 .surah-number {
     color: #087f5b;
+
     font-weight: bold;
-    margin-bottom: 6px;
+
+    margin-bottom: 7px;
 }
 
+.surah strong {
+    font-size: 17px;
+}
+
+
+/* =========================
+   الكروت
+========================= */
+
 .card {
-    background: white;
+    background: rgba(255,255,255,0.97);
+
     padding: 20px;
-    border-radius: 12px;
+
+    border-radius: 13px;
+
     margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,0.09);
+
     line-height: 2;
 }
 
 .card h3 {
     color: #087f5b;
+
     margin-top: 0;
 }
 
 .source {
     color: #777;
+
     font-size: 14px;
 }
+
 
 /* =========================
    وردك اليومي
@@ -151,17 +277,22 @@ textarea {
 
 .daily-wird {
     background: rgba(255,255,255,0.97);
+
     padding: 25px;
+
     border-radius: 18px;
-    margin: 0 auto;
-    max-width: 1100px;
-    box-shadow: 0 5px 18px rgba(0,0,0,0.15);
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,0.15);
+
     text-align: center;
 }
 
 .daily-wird h2 {
     color: #087f5b;
+
     margin-top: 0;
+
     font-size: 28px;
 }
 
@@ -171,26 +302,39 @@ textarea {
 
 .wird-card {
     background: #f4f8f6;
+
     padding: 18px;
+
     border-radius: 14px;
+
     margin: 15px 0;
+
     line-height: 2;
+
     border: 1px solid #e2eee9;
 }
 
 .wird-card h3 {
     color: #087f5b;
+
     margin-top: 0;
 }
 
 .wird-button {
     border: none;
+
     background: #087f5b;
+
     color: white;
+
     padding: 12px 22px;
+
     border-radius: 10px;
+
     font-size: 16px;
+
     cursor: pointer;
+
     margin-top: 8px;
 }
 
@@ -204,48 +348,73 @@ textarea {
 
 .wird-progress {
     width: 100%;
+
     height: 16px;
+
     background: #ddd;
+
     border-radius: 20px;
+
     overflow: hidden;
+
     margin: 20px 0 10px;
 }
 
 #wirdProgress {
     width: 0%;
+
     height: 100%;
+
     background: #087f5b;
+
     transition: 0.4s;
 }
 
 .wird-status {
     font-weight: bold;
+
     color: #087f5b;
+
     margin-top: 10px;
+
     font-size: 17px;
 }
+
 
 /* =========================
    التعليقات
 ========================= */
 
 .comments-box {
-    background: white;
+    background: rgba(255,255,255,0.97);
+
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,0.1);
+
     margin-bottom: 25px;
 }
 
 .comments-box button {
     width: 100%;
+
     margin-top: 12px;
+
     padding: 13px;
+
     border: none;
-    border-radius: 8px;
+
+    border-radius: 9px;
+
     background: #087f5b;
+
     color: white;
+
     font-size: 17px;
+
     cursor: pointer;
 }
 
@@ -253,31 +422,49 @@ textarea {
     background: #056b4d;
 }
 
+.comments-box button:disabled {
+    opacity: 0.7;
+
+    cursor: not-allowed;
+}
+
 .comment-card {
-    background: white;
+    background: rgba(255,255,255,0.97);
+
     padding: 17px;
+
     border-radius: 12px;
+
     margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.07);
+
     border-right: 4px solid #087f5b;
 }
 
 .comment-name {
     color: #087f5b;
+
     font-weight: bold;
+
     font-size: 17px;
 }
 
 .comment-text {
     margin: 8px 0 0;
+
     line-height: 1.8;
+
     word-break: break-word;
 }
 
 .comments-title {
     margin-top: 35px;
+
     margin-bottom: 15px;
 }
+
 
 /* =========================
    واتساب
@@ -285,26 +472,45 @@ textarea {
 
 .whatsapp {
     position: fixed;
+
     left: 20px;
+
     bottom: 100px;
+
     width: 60px;
+
     height: 60px;
+
     border-radius: 50%;
+
     background: #25D366;
+
     color: white;
+
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     text-decoration: none;
+
     font-size: 30px;
+
     font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.25);
+
     z-index: 9999;
+
+    transition: 0.2s;
 }
 
 .whatsapp:hover {
     transform: scale(1.08);
 }
+
 
 /* =========================
    مشغل الصوت
@@ -312,23 +518,46 @@ textarea {
 
 .player {
     position: fixed;
+
     bottom: 0;
+
     right: 0;
+
     left: 0;
+
     background: white;
+
     padding: 15px;
-    box-shadow: 0 -3px 12px rgba(0,0,0,0.15);
+
+    box-shadow:
+        0 -3px 12px rgba(0,0,0,0.15);
+
     display: none;
+
     z-index: 9998;
 }
 
 .player button {
     background: #d63031;
+
     color: white;
+
     border: none;
+
     padding: 8px 15px;
+
     border-radius: 7px;
+
     cursor: pointer;
+
+    margin-bottom: 8px;
+}
+
+#playerTitle {
+    font-weight: bold;
+
+    color: #087f5b;
+
     margin-bottom: 8px;
 }
 
@@ -336,20 +565,77 @@ audio {
     width: 100%;
 }
 
+
+/* =========================
+   الفوتر
+========================= */
+
 footer {
     text-align: center;
+
     padding: 30px 15px;
+
     color: white;
+}
+
+
+/* =========================
+   الموبايل
+========================= */
+
+@media (max-width: 600px) {
+
+    header h1 {
+        font-size: 25px;
+    }
+
+    nav {
+        gap: 6px;
+    }
+
+    nav button {
+        font-size: 13px;
+
+        padding: 9px 11px;
+    }
+
+    .section {
+        padding: 12px;
+    }
+
+    .surah-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .whatsapp {
+        left: 15px;
+
+        bottom: 90px;
+
+        width: 55px;
+
+        height: 55px;
+    }
+
 }
 
 </style>
 </head>
 
+
 <body>
+
+
+<!-- =========================
+     الهيدر
+========================= -->
 
 <header>
 
-<h1>📖 القرآن الكريم</h1>
+<h1>
+📖 القرآن الكريم
+</h1>
 
 <p>
 القرآن الكريم والأحاديث والأذكار
@@ -1057,8 +1343,12 @@ maxlength="500"
 ></textarea>
 
 
-<button onclick="addComment()">
+<button
+id="commentButton"
+onclick="addComment()">
+
 📤 إرسال التعليق
+
 </button>
 
 </div>
@@ -1126,14 +1416,18 @@ aria-label="تواصل معي على واتساب">
 </footer>
 
 
+<!-- =========================
+     Supabase
+========================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 
-/* =========================
+/* =====================================================
    Supabase
-========================= */
+===================================================== */
 
 const SUPABASE_URL =
 "https://lqwtgdjorakdyksinfjy.supabase.co";
@@ -1141,16 +1435,42 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_sPvFBfXQe2WJHS3tXrv78A_cce3t0Er";
 
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+let supabaseClient = null;
 
 
-/* =========================
-   السور
-========================= */
+/*
+   لو Supabase حصل فيه مشكلة،
+   الموقع والقرآن يفضلوا شغالين.
+*/
+
+try {
+
+    if (
+        window.supabase &&
+        window.supabase.createClient
+    ) {
+
+        supabaseClient =
+            window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_KEY
+            );
+
+    }
+
+} catch (error) {
+
+    console.error(
+        "Supabase error:",
+        error
+    );
+
+}
+
+
+/* =====================================================
+   السور الـ 114
+===================================================== */
 
 const surahs = [
 
@@ -1272,9 +1592,9 @@ const surahs = [
 ];
 
 
-/* =========================
+/* =====================================================
    القراء
-========================= */
+===================================================== */
 
 const servers = {
 
@@ -1341,9 +1661,9 @@ jaber:
 };
 
 
-/* =========================
+/* =====================================================
    عرض السور
-========================= */
+===================================================== */
 
 const list =
 document.getElementById("surahList");
@@ -1351,355 +1671,47 @@ document.getElementById("surahList");
 
 function displaySurahs(data = surahs) {
 
-list.innerHTML = "";
+    list.innerHTML = "";
 
-data.forEach((name) => {
+    if (!data.length) {
 
-const div =
-document.createElement("div");
+        list.innerHTML = `
 
-div.className =
-"surah";
+        <div class="card">
 
-const originalNumber =
-surahs.indexOf(name) + 1;
+        ❌ لا توجد سورة بهذا الاسم.
 
-div.innerHTML = `
+        </div>
 
-<div class="surah-number">
+        `;
 
-سورة رقم ${originalNumber}
+        return;
+    }
 
-</div>
 
-<strong>
-${name}
-</strong>
+    data.forEach((name) => {
 
-`;
+        const div =
+            document.createElement("div");
 
-div.onclick = () =>
-playSurah(
-originalNumber,
-name
-);
+        div.className =
+            "surah";
 
-list.appendChild(div);
 
-});
+        const originalNumber =
+            surahs.indexOf(name) + 1;
 
-}
 
+        div.innerHTML = `
 
-/* =========================
-   تشغيل السورة
-========================= */
+            <div class="surah-number">
 
-function playSurah(number, name) {
+                سورة رقم ${originalNumber}
 
-const reciter =
-document.getElementById("reciter").value;
+            </div>
 
-const server =
-servers[reciter];
+            <strong>
 
-const numberString =
-String(number).padStart(3, "0");
+                ${name}
 
-const audioUrl =
-server +
-numberString +
-".mp3";
-
-const audio =
-document.getElementById("audio");
-
-document.getElementById("playerTitle")
-.innerText =
-"🎧 سورة " + name;
-
-audio.src =
-audioUrl;
-
-document.getElementById("player")
-.style.display =
-"block";
-
-audio.play().catch(() => {});
-
-}
-
-
-/* =========================
-   إغلاق المشغل
-========================= */
-
-function closePlayer() {
-
-const audio =
-document.getElementById("audio");
-
-audio.pause();
-
-audio.src = "";
-
-document.getElementById("player")
-.style.display =
-"none";
-
-}
-
-
-/* =========================
-   البحث عن سورة
-========================= */
-
-function searchSurah() {
-
-const search =
-document
-.getElementById("search")
-.value
-.trim();
-
-const result =
-surahs.filter(name =>
-name.includes(search)
-);
-
-displaySurahs(result);
-
-}
-
-
-/* =========================
-   التنقل بين الأقسام
-========================= */
-
-function showSection(sectionId) {
-
-document
-.querySelectorAll(".section")
-.forEach(section => {
-
-section.classList.remove("active");
-
-});
-
-
-document
-.getElementById(sectionId)
-.classList.add("active");
-
-
-window.scrollTo({
-
-top: 0,
-
-behavior: "smooth"
-
-});
-
-
-if (sectionId === "comments") {
-
-loadComments();
-
-}
-
-}
-
-
-/* =========================
-   حماية النص
-========================= */
-
-function escapeHTML(text) {
-
-const div =
-document.createElement("div");
-
-div.textContent =
-text;
-
-return div.innerHTML;
-
-}
-
-
-/* =========================
-   تحميل التعليقات
-========================= */
-
-async function loadComments() {
-
-const list =
-document.getElementById("commentsList");
-
-list.innerHTML =
-"⏳ جاري تحميل التعليقات...";
-
-
-const { data, error } =
-await supabaseClient
-.from("comments")
-.select("*")
-.order("id", {
-ascending: false
-});
-
-
-if (error) {
-
-console.error(error);
-
-list.innerHTML =
-"❌ حصل خطأ في تحميل التعليقات.";
-
-return;
-
-}
-
-
-if (!data || data.length === 0) {
-
-list.innerHTML =
-"😊 لسه مفيش تعليقات. كن أول واحد يكتب تعليق!";
-
-return;
-
-}
-
-
-list.innerHTML =
-data.map(item => `
-
-<div class="comment-card">
-
-<div class="comment-name">
-
-👤 ${escapeHTML(
-item.name || "زائر"
-)}
-
-</div>
-
-<p class="comment-text">
-
-${escapeHTML(
-item.comment || ""
-)}
-
-</p>
-
-</div>
-
-`).join("");
-
-}
-
-
-/* =========================
-   إضافة تعليق
-========================= */
-
-async function addComment() {
-
-const name =
-document
-.getElementById("commentName")
-.value
-.trim();
-
-
-const comment =
-document
-.getElementById("commentText")
-.value
-.trim();
-
-
-if (!name) {
-
-alert(
-"⚠️ اكتب اسمك الأول"
-);
-
-return;
-
-}
-
-
-if (!comment) {
-
-alert(
-"⚠️ اكتب التعليق الأول"
-);
-
-return;
-
-}
-
-
-if (name.length > 50) {
-
-alert(
-"⚠️ الاسم طويل جدًا"
-);
-
-return;
-
-}
-
-
-if (comment.length > 500) {
-
-alert(
-"⚠️ التعليق طويل جدًا"
-);
-
-return;
-
-}
-
-
-const button =
-document.querySelector(
-".comments-box button"
-);
-
-
-button.disabled =
-true;
-
-button.innerText =
-"⏳ جاري إرسال التعليق...";
-
-
-const { error } =
-await supabaseClient
-.from("comments")
-.insert([
-
-{
-
-name:
-name,
-
-comment:
-comment
-
-}
-
-]);
-
-
-if (error) {
-
-console.error(error);
-
-alert(
-"❌ حصل خطأ أثناء إرسال التعليق."
-);
-
-but
+            </stro
